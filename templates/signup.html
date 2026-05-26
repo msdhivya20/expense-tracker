@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Signup | Expense Tracker Pro</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+    font-family: Inter, sans-serif;
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+}
+
+/* WRAPPER */
+.signup-wrapper{
+    width:100%;
+    max-width:1000px;
+    display:flex;
+    gap:40px;
+    align-items:center;
+    padding:20px;
+}
+
+/* LEFT */
+.left-hero{
+    flex:1;
+    color:white;
+}
+
+.left-hero h1{
+    font-size:46px;
+    font-weight:800;
+    line-height:1.1;
+}
+
+.left-hero p{
+    color:#cbd5e1;
+    margin-top:10px;
+    font-size:15px;
+}
+
+.badge-box span{
+    background: rgba(255,255,255,0.1);
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
+    color:#e2e8f0;
+    margin-right:8px;
+}
+
+/* FORM CARD */
+.card-box{
+    flex:1;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius:18px;
+    padding:28px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.4);
+    color:white;
+}
+
+/* TITLE */
+.title{
+    font-size:22px;
+    font-weight:800;
+    margin-bottom:5px;
+}
+
+.subtitle{
+    font-size:13px;
+    color:#cbd5e1;
+    margin-bottom:15px;
+}
+
+/* LABEL */
+label{
+    font-size:13px;
+    font-weight:600;
+    color:#cbd5e1;
+    margin-top:10px;
+}
+
+/* INPUT FIX (IMPORTANT) */
+.form-control{
+    height:44px;
+    border-radius:10px;
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.2);
+    color:white;
+    font-size:14px;
+}
+
+.form-control:focus{
+    background: rgba(255,255,255,0.15);
+    color:white;
+    border-color:#3b82f6;
+    box-shadow:none;
+}
+
+/* BUTTON */
+.btn-primary{
+    width:100%;
+    height:44px;
+    font-weight:600;
+    border-radius:10px;
+    background:#3b82f6;
+    border:none;
+}
+
+.btn-primary:hover{
+    background:#2563eb;
+}
+
+/* LINKS */
+.footer{
+    text-align:center;
+    margin-top:14px;
+    font-size:13px;
+    color:#cbd5e1;
+}
+
+.footer a{
+    color:#60a5fa;
+    text-decoration:none;
+}
+
+/* HOME */
+.home-link{
+    display:block;
+    text-align:center;
+    margin-top:10px;
+    font-size:12px;
+    color:#94a3b8;
+}
+
+/* MESSAGE INSIDE CARD */
+.message-box{
+    margin-bottom:12px;
+}
+
+.alert{
+    border-radius:10px;
+    font-size:13px;
+    padding:10px;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+    .signup-wrapper{
+        flex-direction:column;
+        text-align:center;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="signup-wrapper">
+
+    <!-- LEFT -->
+    <div class="left-hero">
+
+        <h1>Smart Expense<br>Tracking System</h1>
+
+        <p>Manage expenses, budgets and insights in one place.</p>
+
+        <div class="badge-box mt-3">
+            <span>📊 Analytics</span>
+            <span>💰 Budget</span>
+            <span>🤖 AI</span>
+            <span>📈 Reports</span>
+        </div>
+
+    </div>
+
+    <!-- RIGHT CARD -->
+    <div class="card-box">
+
+        <div class="title">Create Account</div>
+        <div class="subtitle">Start your financial journey</div>
+
+        <!-- MESSAGE INSIDE CARD -->
+        {% if messages %}
+        <div class="message-box" id="msg-box">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <label>Username</label>
+            <input type="text" name="username" class="form-control" required>
+
+            <label>Email</label>
+            <input type="email" name="email" class="form-control" required>
+
+            <label>Password</label>
+            <input type="password" name="password" class="form-control" required>
+
+            <button class="btn btn-primary mt-3">
+                Create Account
+            </button>
+
+        </form>
+
+        <div class="footer">
+            Already have an account?
+            <a href="{% url 'login' %}">Login</a>
+        </div>
+
+        <a href="{% url 'home' %}" class="home-link">
+            ← Back to Home
+        </a>
+
+    </div>
+
+</div>
+
+<!-- AUTO HIDE MESSAGE -->
+<script>
+setTimeout(() => {
+    const box = document.getElementById("msg-box");
+    if (box) {
+        box.style.transition = "0.5s";
+        box.style.opacity = "0";
+        setTimeout(() => box.remove(), 500);
+    }
+}, 3000);
+</script>
+
+</body>
+</html>

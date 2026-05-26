@@ -1,0 +1,463 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Report
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-2" style="color:#111827;">
+
+    <!-- ================= HEADER ================= -->
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <div>
+
+            <h4 class="fw-bold mb-1">
+                📄 Expense Report
+            </h4>
+
+            <div style="font-size:12px;color:#6b7280;">
+                Financial Overview • Insights • Performance
+            </div>
+
+        </div>
+
+
+        <div class="d-flex gap-2 align-items-center">
+
+            <div class="border rounded bg-white shadow-sm px-4 py-2 text-center">
+
+                <div style="font-size:11px;color:#6b7280;">
+                    Period
+                </div>
+
+                <div style="font-size:13px;font-weight:700;">
+
+                    {% if start_date and end_date %}
+
+                    {{ start_date }} → {{ end_date }}
+
+                    {% else %}
+
+                    {{ current_month }}
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <a href="{% url 'report' %}" class="btn btn-outline-secondary btn-sm">
+
+                Current Month
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= FILTER ================= -->
+
+    <div class="border rounded bg-white p-3 mb-3">
+
+        <form method="GET">
+
+            <div class="row g-2 align-items-end">
+
+                <div class="col-md-5">
+
+                    <label class="small text-muted">
+                        Start Date
+                    </label>
+
+                    <input type="date" name="start_date" value="{{ start_date }}" class="form-control form-control-sm">
+
+                </div>
+
+
+
+                <div class="col-md-5">
+
+                    <label class="small text-muted">
+                        End Date
+                    </label>
+
+                    <input type="date" name="end_date" value="{{ end_date }}" class="form-control form-control-sm">
+
+                </div>
+
+
+
+                <div class="col-md-2">
+
+                    <button class="btn btn-dark btn-sm w-100">
+
+                        Apply
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+
+    <!-- ================= KPI ================= -->
+
+    <div class="row g-2 mb-3">
+
+        <div class="col-lg-3">
+
+            <div class="border rounded bg-white p-3">
+
+                <div class="text-muted small">
+                    💰 Total Expense
+                </div>
+
+                <h4 class="fw-bold mb-0">
+                    ₹ {{ total }}
+                </h4>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="col-lg-3">
+
+            <div class="border rounded bg-white p-3">
+
+                <div class="text-muted small">
+                    📈 Budget Usage
+                </div>
+
+                <h4 class="fw-bold">
+                    {{ budget_percent }}%
+                </h4>
+
+                <div class="progress">
+
+                    <div class="progress-bar bg-dark" style="width:{{ budget_percent }}%">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="col-lg-3">
+
+            <div class="border rounded bg-white p-3">
+
+                <div class="text-muted small">
+                    🏆 Top Category
+                </div>
+
+                <h5 class="fw-bold">
+
+                    {{ top_category }}
+
+                </h5>
+
+                <small>
+
+                    ₹ {{ top_amount }}
+
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="col-lg-3">
+
+            <div class="border rounded bg-white p-3">
+
+                <div class="text-muted small">
+                    📅 Daily Average
+                </div>
+
+                <h4 class="fw-bold">
+
+                    ₹ {{ avg_daily }}
+
+                </h4>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= INSIGHTS ================= -->
+
+    <div class="row g-2 mb-3">
+
+        <div class="col-lg-6">
+
+            <div class="border rounded bg-white p-3 h-100">
+
+                <div class="fw-bold mb-2">
+
+                    🔥 Highest Expense
+
+                </div>
+
+                {% if highest %}
+
+                <h4>
+
+                    ₹ {{ highest.amount }}
+
+                </h4>
+
+                <div>
+
+                    {{ highest.title }}
+
+                </div>
+
+                <span class="badge bg-secondary">
+
+                    {{ highest.category.name }}
+
+                </span>
+
+                {% else %}
+
+                No expenses available
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+
+        <div class="col-lg-6">
+
+            <div class="border rounded bg-white p-3 h-100">
+
+                <div class="fw-bold mb-2">
+
+                    💡 Smart Insights
+
+                </div>
+
+                <ul class="mb-0 small">
+
+                    {% for item in insights %}
+
+                    <li>{{ item }}</li>
+
+                    {% empty %}
+
+                    <li>No insights available</li>
+
+                    {% endfor %}
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= TABLES ================= -->
+
+    <div class="row g-2 mb-3">
+
+        <!-- RECENT -->
+
+        <div class="col-lg-6">
+
+            <div class="border rounded bg-white">
+
+                <div class="p-3 fw-bold">
+
+                    🕒 Recent Activity
+
+                </div>
+
+                <table class="table table-sm mb-0">
+
+                    <thead class="table-light">
+
+                        <tr>
+
+                            <th>Title</th>
+                            <th>Amount</th>
+                            <th>Category</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for e in recent %}
+
+                        <tr>
+
+                            <td>{{ e.title }}</td>
+
+                            <td>₹ {{ e.amount }}</td>
+
+                            <td>
+
+                                <span class="badge bg-secondary">
+
+                                    {{ e.category.name }}
+
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="3">
+
+                                No activity
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- CATEGORY -->
+
+        <div class="col-lg-6">
+
+            <div class="border rounded bg-white">
+
+                <div class="p-3 fw-bold">
+
+                    📊 Category Ranking
+
+                </div>
+
+                <table class="table table-sm mb-0">
+
+                    <thead class="table-light">
+
+                        <tr>
+
+                            <th>#</th>
+                            <th>Category</th>
+                            <th>Total</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for item in category_report %}
+
+                        <tr>
+
+                            <td>#{{ forloop.counter }}</td>
+
+                            <td>{{ item.category__name }}</td>
+
+                            <td>₹ {{ item.total }}</td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="3">
+
+                                No records
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= EXPORT ================= -->
+
+<div class="border rounded bg-white p-3 mt-2 d-flex justify-content-between align-items-center">
+        <div class="fw-bold">
+
+            📦 Export Reports
+
+        </div>
+
+        <div class="d-flex gap-2">
+
+          <a
+href="{% url 'export_excel' %}?start_date={{ start_date|default:'' }}&end_date={{ end_date|default:'' }}"
+class="btn btn-success btn-sm">
+
+Excel
+
+</a>
+
+         <a href="{% url 'export_pdf' %}?start_date={{ start_date|default:'' }}&end_date={{ end_date|default:'' }}"
+class="btn btn-danger btn-sm">
+
+PDF
+
+</a>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+{% endblock %}

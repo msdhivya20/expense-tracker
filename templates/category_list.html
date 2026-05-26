@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container-fluid py-2">
+
+
+
+<!-- HEADER -->
+<div class="mb-2">
+
+    <div style="font-size:18px; font-weight:800; color:#111827;">
+        🗂 Manage Categories
+    </div>
+
+    <div style="font-size:12px; color:#6b7280;">
+        Create and organize your expense categories
+    </div>
+
+</div>
+
+
+
+<!-- ADD CATEGORY -->
+<div class="border rounded bg-white shadow-sm p-3 mb-2">
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div class="row g-2 align-items-center">
+
+            <div class="col-lg-10">
+
+                <input type="text"
+                       name="name"
+                       value="{{ form.name.value }}"
+                       class="form-control form-control-sm"
+                       placeholder="Enter category name"
+                       style="font-weight:600;">
+
+            </div>
+
+            <div class="col-lg-2">
+
+                <button class="btn btn-dark btn-sm w-100">
+                    ➕ Add
+                </button>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+
+<!-- TABLE -->
+<div class="border rounded bg-white shadow-sm">
+
+    <div class="p-2 d-flex justify-content-between align-items-center">
+
+        <div style="font-size:13px; font-weight:800;">
+            Category List
+        </div>
+
+        <div style="font-size:12px; color:#6b7280;">
+            {{ categories|length }} items
+        </div>
+
+    </div>
+
+
+
+    <div class="table-responsive">
+
+        <table class="table table-sm mb-0 align-middle">
+
+            <thead class="table-light">
+
+                <tr style="font-size:12px;">
+                    <th>Category Name</th>
+                    <th style="width:120px;">Action</th>
+                </tr>
+
+            </thead>
+
+            <tbody style="font-size:13px; color:#111827;">
+
+                {% for category in categories %}
+
+                <tr>
+
+                    <td style="font-weight:600;">
+                        🗂 {{ category.name }}
+                    </td>
+
+                    <td>
+
+                        <a href="{% url 'delete_category' category.id %}"
+                           class="btn btn-sm btn-outline-danger px-2 py-0">
+                            Delete
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="2" class="text-center py-3">
+                        No categories found
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+
+</div>
+
+{% endblock %}

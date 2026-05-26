@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Add Expense
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-2">
+
+
+
+<!-- HEADER -->
+<div class="mb-2">
+
+    <div style="font-size:18px; font-weight:800; color:#111827;">
+        ➕ Add New Expense
+    </div>
+
+    <div style="font-size:12px; color:#6b7280;">
+        Track your spending in real-time
+    </div>
+
+</div>
+
+
+
+<!-- FORM CARD -->
+<div class="border rounded bg-white shadow-sm p-3">
+
+    <form id="expenseForm" method="POST">
+
+        {% csrf_token %}
+
+        <div class="row g-3">
+
+            {% for field in form %}
+
+            <div class="col-lg-6">
+
+                <label style="font-size:12px; font-weight:700; color:#111827;">
+                    {{ field.label }}
+                </label>
+
+                {{ field }}
+
+                {% if field.errors %}
+                    <div style="font-size:11px; color:red;">
+                        {{ field.errors }}
+                    </div>
+                {% endif %}
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+
+        <!-- BUTTON -->
+        <div class="mt-3 d-flex gap-2">
+
+            <button type="submit" class="btn btn-primary btn-sm px-4">
+                💾 Save Expense
+            </button>
+
+            <a href="{% url 'dashboard' %}" class="btn btn-outline-dark btn-sm px-4">
+                Cancel
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+
+<!-- SUCCESS MESSAGE -->
+<div id="successMessage" class="mt-3"></div>
+
+
+
+</div>
+
+
+
+<!-- AJAX SCRIPT -->
+<script>
+
+const form = document.getElementById('expenseForm');
+
+form.addEventListener('submit', function(e){
+
+    e.preventDefault();
+
+    const formData = new FormData(form);
+
+    fetch("{% url 'add_expense' %}", {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+
+    .then(res => res.json())
+    .then(data => {
+
+        if(data.success){
+
+            document.getElementById('successMessage').innerHTML = `
+                <div class="alert alert-success py-2 shadow-sm">
+                    ✅ Expense Added Successfully!
+                </div>
+            `;
+
+            form.reset();
+
+        } else {
+
+            document.getElementById('successMessage').innerHTML = `
+                <div class="alert alert-danger py-2">
+                    ❌ Something went wrong
+                </div>
+            `;
+
+        }
+
+    });
+
+});
+
+</script>
+
+{% endblock %}

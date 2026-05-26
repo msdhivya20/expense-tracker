@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container-fluid py-2">
+
+
+
+<!-- HEADER -->
+<div class="mb-2">
+
+    <div style="font-size:18px; font-weight:800; color:#111827;">
+        📊 Monthly Expense Analytics
+    </div>
+
+    <div style="font-size:12px; color:#6b7280;">
+        Every month expense comparison & trend analysis
+    </div>
+
+</div>
+
+
+
+<!-- FILTER -->
+<div class="border rounded bg-white shadow-sm p-3 mb-2">
+
+<form method="GET">
+
+<div class="row g-2 align-items-end">
+
+    <div class="col-lg-5">
+        <label style="font-size:11px; font-weight:700;">From Date</label>
+        <input type="date"
+               name="start_date"
+               value="{{ start_date }}"
+               class="form-control form-control-sm">
+    </div>
+
+    <div class="col-lg-5">
+        <label style="font-size:11px; font-weight:700;">To Date</label>
+        <input type="date"
+               name="end_date"
+               value="{{ end_date }}"
+               class="form-control form-control-sm">
+    </div>
+
+    <div class="col-lg-2">
+        <button class="btn btn-dark btn-sm w-100">
+            Apply
+        </button>
+    </div>
+
+</div>
+
+</form>
+
+</div>
+
+
+
+<!-- KPI ROW -->
+<div class="row g-2 mb-2">
+
+    <div class="col-lg-3">
+        <div class="border rounded bg-white shadow-sm p-2">
+            <div style="font-size:11px; color:#6b7280;">Total Spent</div>
+            <div style="font-size:20px; font-weight:800;">
+                ₹ {{ total_spent }}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="border rounded bg-white shadow-sm p-2">
+            <div style="font-size:11px; color:#6b7280;">Average / Month</div>
+            <div style="font-size:20px; font-weight:800;">
+                ₹ {{ avg_spent|floatformat:0 }}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="border rounded bg-white shadow-sm p-2">
+            <div style="font-size:11px; color:#6b7280;">Highest Month</div>
+            <div style="font-size:14px; font-weight:800;">
+                {{ max_month }}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="border rounded bg-white shadow-sm p-2">
+            <div style="font-size:11px; color:#6b7280;">Growth Trend</div>
+            <div style="font-size:18px; font-weight:800;">
+                {% if growth > 0 %}
+                    📈 {{ growth|floatformat:1 }}%
+                {% else %}
+                    📉 {{ growth|floatformat:1 }}%
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<!-- CHART -->
+<div class="border rounded bg-white shadow-sm p-3">
+
+    <!-- TITLE (YOU DID NOT WANT TO MISS THIS) -->
+    <div class="d-flex justify-content-between align-items-center mb-2">
+
+        <div style="font-size:14px; font-weight:800;">
+            📊 Monthly Expense Comparison
+        </div>
+
+        <div style="font-size:11px; color:#6b7280;">
+            Every month expense tracking
+        </div>
+
+    </div>
+
+    <canvas id="barChart" style="height:320px;"></canvas>
+
+</div>
+
+</div>
+
+
+
+<!-- CHART JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const ctx = document.getElementById('barChart');
+
+new Chart(ctx, {
+
+    type: 'bar',
+
+    data: {
+
+        labels: {{ months|safe }},
+
+        datasets: [{
+
+            label: 'Monthly Expenses',
+
+            data: {{ totals|safe }},
+
+            backgroundColor: [
+                '#4e73df',
+                '#1cc88a',
+                '#36b9cc',
+                '#f6c23e',
+                '#e74a3b',
+                '#6f42c1',
+                '#fd7e14'
+            ]
+
+        }]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        plugins: {
+            legend: {
+                display: true
+            }
+        },
+
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+
+    },
+
+    plugins: [{
+
+        afterDatasetsDraw(chart) {
+
+            const { ctx } = chart;
+
+            chart.data.datasets.forEach((dataset, i) => {
+
+                const meta = chart.getDatasetMeta(i);
+
+                meta.data.forEach((bar, index) => {
+
+                    const value = dataset.data[index];
+
+                    ctx.fillStyle = "#111827";
+                    ctx.font = "12px Inter";
+                    ctx.textAlign = "center";
+
+                    ctx.fillText(
+                        "₹ " + value,
+                        bar.x,
+                        bar.y - 6
+                    );
+
+                });
+
+            });
+
+        }
+
+    }]
+
+});
+
+</script>
+
+{% endblock %}

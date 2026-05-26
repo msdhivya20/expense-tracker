@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Expense Tracker Pro</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+    font-family: Inter, sans-serif;
+    background: #f6f7fb;
+}
+
+/* NAVBAR */
+.navbar{
+    background: rgba(15, 23, 42, 0.95) !important;
+    backdrop-filter: blur(10px);
+    padding: 14px 0;
+}
+
+/* HERO */
+.hero{
+    padding: 110px 20px 90px;
+    text-align: center;
+    background: linear-gradient(180deg, #0f172a, #1e293b);
+    color: white;
+}
+
+.hero h1{
+    font-size: 44px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.hero p{
+    font-size: 15px;
+    color: #cbd5e1;
+    margin-top: 10px;
+}
+
+/* PRIMARY BUTTON */
+.btn-primary{
+    background: #2563eb;
+    border: none;
+    padding: 11px 26px;
+    font-weight: 700;
+    border-radius: 10px;
+    transition: 0.2s ease;
+}
+
+.btn-primary:hover{
+    transform: translateY(-2px);
+    background: #1d4ed8;
+}
+
+/* FEATURES */
+.features{
+    margin-top: -30px;
+}
+
+.feature-card{
+    background: white;
+    border-radius: 16px;
+    padding: 22px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+    transition: 0.25s ease;
+}
+
+.feature-card:hover{
+    transform: translateY(-6px);
+}
+
+.feature-icon{
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+
+.feature-card h4{
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.feature-card p{
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 0;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+
+<div class="container">
+
+    <a class="navbar-brand fw-bold" href="{% url 'home' %}">
+        💰 ExpenseTracker Pro
+    </a>
+
+    <!-- RIGHT SIDE BUTTONS -->
+    <div class="ms-auto d-flex align-items-center gap-2">
+
+        <!-- LOGIN -->
+        <a href="{% url 'login' %}"
+           class="btn btn-outline-light px-3 py-2"
+           style="border-radius:10px; font-weight:600; font-size:14px;">
+            Login
+        </a>
+
+        <!-- GET STARTED -->
+        <a href="{% url 'signup' %}"
+           class="btn px-3 py-2"
+           style="
+                background:#2563eb;
+                color:white;
+                border-radius:10px;
+                font-weight:700;
+                font-size:14px;
+                box-shadow:0 6px 15px rgba(37,99,235,0.3);
+                transition:0.2s;
+            "
+           onmouseover="this.style.transform='translateY(-2px)'"
+           onmouseout="this.style.transform='translateY(0)'">
+
+            Signup
+        </a>
+
+    </div>
+
+</div>
+
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+
+    <h1>Smart Expense Tracking System</h1>
+
+    <p>Manage expenses • Control budget • AI insights • Financial clarity</p>
+
+    <a href="{% url 'signup' %}" class="btn btn-primary mt-4">
+        🚀 Get Started
+    </a>
+
+</div>
+
+<!-- FEATURES -->
+<div class="container features pb-5">
+
+<div class="row g-4">
+
+    <div class="col-md-4">
+        <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h4>Smart Analytics</h4>
+            <p>Understand spending patterns with clean dashboards and insights.</p>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="feature-card">
+            <div class="feature-icon">🤖</div>
+            <h4>AI Predictions</h4>
+            <p>Forecast future expenses using intelligent data analysis.</p>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="feature-card">
+            <div class="feature-icon">💰</div>
+            <h4>Budget Control</h4>
+            <p>Set limits and track your financial health in real-time.</p>
+        </div>
+    </div>
+
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
