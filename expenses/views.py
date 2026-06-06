@@ -24,7 +24,6 @@ from reportlab.platypus import PageBreak
 
 from django.http import JsonResponse
 
-from .ml_model import predict_expense
 
 from .forms import BudgetForm
 from .models import Budget

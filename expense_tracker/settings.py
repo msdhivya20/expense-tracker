@@ -25,9 +25,7 @@ SECRET_KEY = "django-insecure-_%g6f+#3$5^(@l)7%_b-ai@*od_h%ferc$&57v)6#vzwqam@@0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    ".onrender.com"
-]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -133,3 +131,8 @@ LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = 'home'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
